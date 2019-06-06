@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "Wrapper"
+
 if [ ! -d /var/svn/root ]; then
    svnadmin create /var/svn/root
    htpasswd -bc /etc/apache2/conf.d/davsvn.htpasswd admin adminpw
@@ -8,10 +10,12 @@ if [ ! -d /var/svn/root ]; then
    svn import rootSvnFldr file:///var/svn/root -m "dummy commit"
    chgrp -R apache /var/svn/root
    chmod -R 775 /var/svn/root
+   echo "Subversion setup"
 fi
 
 # Start Jooby SvnMerkleizer
-/usr/bin/java -jar /usr/share/myservice/svnmerkleizer.jar &
+/usr/bin/java -cp /usr/share/myservice/svnmerkleizer.jar com.paulhammant.svnmerkleizer.boot.ViaHiddenGetRoutesAndCommandLineArgs http://localhost:80/svn/root/ merkle "" 8080 &
+
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start svnmerkleizer process: $status"
@@ -28,7 +32,7 @@ fi
 
 # Naive check runs checks once a minute to see if either of the processes exited.
 # This illustrates part of the heavy lifting you need to do if you want to run
-# more than one service in a container. The container will exit with an error
+# more than one service in a single container. The container will exit with an error
 # if it detects that either of the processes has exited.
 # Otherwise it will loop forever, waking up every 60 seconds
 

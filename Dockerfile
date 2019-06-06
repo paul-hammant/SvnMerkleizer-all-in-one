@@ -9,7 +9,7 @@ RUN mkdir -p /run/apache2
 
 EXPOSE 80
 
-ADD svnmerkleizer-1.0-SNAPSHOT.jar /usr/share/myservice/svnmerkleizer.jar
+ADD svnmerkleizer-service-1.0-SNAPSHOT.jar /usr/share/myservice/svnmerkleizer.jar
 
 ADD wrapper_script.sh /
 RUN chmod +x /wrapper_script.sh
