@@ -13,14 +13,19 @@ if [ ! -d /var/svn/root ]; then
    echo "Subversion setup"
 fi
 
+echo "Starting SvnMerkleizer service (Jooby)"
+
 # Start Jooby SvnMerkleizer
-/usr/bin/java -cp /usr/share/myservice/svnmerkleizer.jar com.paulhammant.svnmerkleizer.boot.ViaHiddenGetRoutesAndCommandLineArgs http://localhost:80/svn/root/ merkle "" 8080 &
+java -cp /usr/share/myservice/svnmerkleizer.jar com.paulhammant.svnmerkleizer.boot.ViaHiddenGetRoutesAndCommandLineArgs http://localhost:80/svn/root/ merkle "" 8080 &
+echo "Started Jooby + svnmerkleizer service"
 
 status=$?
 if [ $status -ne 0 ]; then
-  echo "Failed to start svnmerkleizer process: $status"
+  echo "Failed to start SvnMerkleizer service process: $status"
   exit $status
 fi
+
+echo "Started SvnMerkleizer service"
 
 # Start Apache + Subversion
 httpd
@@ -45,7 +50,7 @@ while /bin/true; do
   # If they are not both 0, then something is wrong
   if [ $PROCESS_1_STATUS -ne 0 -o $PROCESS_2_STATUS -ne 0 ]; then
     echo "One of the processes has already exited."
-    exit -1
+    exit 10
   fi
   sleep 60
 done
