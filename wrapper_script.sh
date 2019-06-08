@@ -17,7 +17,7 @@ echo "Starting SvnMerkleizer service (Jooby)"
 
 # Start Jooby SvnMerkleizer
 java -cp /usr/share/myservice/svnmerkleizer.jar com.paulhammant.svnmerkleizer.boot.ViaHiddenGetRoutesAndCommandLineArgs http://localhost:80/svn/root/ merkle "" 8080 &
-echo "Started Jooby + svnmerkleizer service"
+echo "Started Jooby + SvnMerkleizer service"
 
 status=$?
 if [ $status -ne 0 ]; then
