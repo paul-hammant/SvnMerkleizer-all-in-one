@@ -1,9 +1,9 @@
 # What is this?
 
-It is Apache2 with Subversion's MOD_DAV_SVN Apache module and a Java process all in one Docker image (*). The Java process overlays the 
-Subversion directories with extra meta-information files giving 
-Subversion a full merkle tree capability. It obeys Subversion's user/group permissions, so the Merkle tree could 
-differ per user, as you would want.
+It is Apache2 with Subversion's MOD_DAV_SVN Apache module and a Java process adding a merkle tree all in one Docker 
+image (*). The key piece is that Java process that overlays the Subversion directories with extra meta-information 
+resources giving Subversion a full merkle tree capability. That's [SvnMerkleizer](https://github.com/paul-hammant/SvnMerkleizer), 
+and it obeys Subversion's user/group permissions, so the Merkle tree could differ per user, as you would want.
 
 * two docker images would be more normal for this, as this is more than one dissimilar process. This single Docker 
 container design is to reduce I/O distance between the pieces as the whole thing is very chatty, and latency can be 
@@ -20,23 +20,16 @@ $ cd svnmerkleizer-allinone
 
 ## 2. Getting the SvnMerkleizer fat jar dependency
 
-First we need the SvnMerkleizer fat jar
-
-### 2.1 if you are NOT going to build it yourself
+Next you need the SvnMerkleizer fat jar
 
 ```
-$ mvn dependency:get -Dartifact=com.paulhammant.svnmerkleizer:svnmerkleizer:1.0-SNAPSHOT
-```
-
-### 2.2 If you want to build it yourself:
-
-```
+# In a new terminal window .....
 $ git clone git@github.com:paul-hammant/SvnMerkleizer.git
 $ cd SvnMerkleizer
 $ mvn clean install -DskipTests  
 ```
 
-### 2.3 Copying it into this checkout
+Then copy that into the checkout from #1
 
 ```
 cp ~/.m2/repository/com/paulhammant/svnmerkleizer/svnmerkleizer-service/1.0-SNAPSHOT/svnmerkleizer-service-1.0-SNAPSHOT.jar .
@@ -56,20 +49,33 @@ $ docker run -d -p 8098:80 -P paulhammant/svnmerkleizer-allinone
 
 ^ The container starts with a default superuser account: admin (password: adminpw) and a repository at http://localhost:8098/svn/root/
 
-# Using it
+# Simple using of it
 
-Navigate to http://localhost:8098/svn/root/.merkle.txt using your browser to see the root of the Merkle tree. You'll have to 
-authenticate - the user is `admin` and password is `adminpw`. 
+Navigate to http://localhost:8098/svn/root/.merkle.txt **using your browser** to see the root of the Merkle tree. You'll have to 
+authenticate: the user is `admin` and password is `adminpw`. 
 
-Or you can do a checkout `svn co --username admin http://localhost:8098/svn/root/` to use it as a normal Subversion 
-server.
+From the command line, using curl, to see the same thing:
 
+```
+curl -u admin:adminpw http://localhost:8098/svn/root/.merkle.txt
+
+```
+
+Lastly, you can do a regular Subversion checkout `svn co --username admin http://localhost:8098/svn/root/`, but with that the `.merkle.*` resources are **not** in the local checkout. That is because the Subversion client does not know about the those resources.
+
+
+# Testing it
+
+Using Subversion, make some changes/additions (directories and files) and commit them back to the repo. Usin the curl command above, look at the changing `.merkle.txt` files after you've done each commit.
+
+Be aware that you also have `.merkle.csv`, `.merkle.json`, `.merkle.xml` and `.merkle.html` too.
 
 # TODO
 
-1. Allow a parameterized admin password
-2. Specify a volume for the Subversion FS storage.
+1. Allow a parameterized admin password in the docker image
+2. Allow a parameterized volume for the Subversion file system storage.
+3. Upgrade past Alpine 3.7.1 & Java 8.
 
 # Credits
 
-Thanks to 'Pika Do' for pikado/alpine-svn for getting me started with Alpine Linux, Docker and Subversion over WebDAV.
+Thanks to 'Pika Do' for pikado/alpine-svn for getting me started with Subversion via WebDAV inside a Docker image.
