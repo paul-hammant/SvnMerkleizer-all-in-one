@@ -14,8 +14,8 @@ high at times.
 ## 1. Clone this repo
   
 ```
-$ git clone git@github.com:paul-hammant-fork/svnmerkleizer-allinone.git
-$ cd svnmerkleizer-allinone
+$ git clone git@github.com:paul-hammant-fork/SvnMerkleizer-all-in-one.git
+$ cd SvnMerkleizer-all-in-one
 ```
 
 ## 2. Getting the SvnMerkleizer fat jar dependency
@@ -38,13 +38,13 @@ cp ~/.m2/repository/com/paulhammant/svnmerkleizer/svnmerkleizer-service/1.0-SNAP
 ## 3. Building the Docker image
 
 ```
-$ docker build -t paulhammant/svnmerkleizer-allinone .
+$ docker build -t paulhammant/SvnMerkleizer-all-in-one .
 ```
 
 ## 4. Running it (no version on Dockerhub yet)
 
 ```
-$ docker run -d -p 8098:80 -P paulhammant/svnmerkleizer-allinone
+$ docker run -d -p 8098:80 -P paulhammant/SvnMerkleizer-all-in-one
 ```
 
 ^ The container starts with a default superuser account: admin (password: adminpw) and a repository at http://localhost:8098/svn/root/
