@@ -14,7 +14,7 @@ high at times.
 ## 1. Clone this repo
   
 ```
-$ git clone git@github.com:paul-hammant-fork/SvnMerkleizer-all-in-one.git
+$ git clone git@github.com:paul-hammant/SvnMerkleizer-all-in-one.git
 $ cd SvnMerkleizer-all-in-one
 ```
 
@@ -38,7 +38,7 @@ cp ~/.m2/repository/com/paulhammant/svnmerkleizer/svnmerkleizer-service/1.0-SNAP
 ## 3. Building the Docker image
 
 ```
-$ docker build -t paulhammant/SvnMerkleizer-all-in-one .
+$ docker build -t paulhammant/svnmerkleizer-all-in-one .
 ```
 
 ## 4. Running it (no version on Dockerhub yet)
