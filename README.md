@@ -44,7 +44,7 @@ $ docker build -t paulhammant/svnmerkleizer-all-in-one .
 ## 4. Running it (no version on Dockerhub yet)
 
 ```
-$ docker run -d -p 8098:80 -P paulhammant/SvnMerkleizer-all-in-one
+$ docker run -d -p 8098:80 -P paulhammant/svnmerkleizer-all-in-one
 ```
 
 ^ The container starts with a default superuser account: admin (password: adminpw) and a repository at http://localhost:8098/svn/root/
@@ -66,7 +66,7 @@ Lastly, you can do a regular Subversion checkout `svn co --username admin http:/
 
 # Testing it
 
-Using Subversion, make some changes/additions (directories and files) and commit them back to the repo. Usin the curl command above, look at the changing `.merkle.txt` files after you've done each commit.
+Using Subversion, make some changes/additions (directories and files) and commit them back to the repo. Using the curl command above, look at the changing `.merkle.txt` files after you've done each commit.
 
 Be aware that you also have `.merkle.csv`, `.merkle.json`, `.merkle.xml` and `.merkle.html` too.
 
